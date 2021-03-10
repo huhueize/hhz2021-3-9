@@ -1,14 +1,56 @@
-server:
-  port: 8081
-spring:
-  thymeleaf:
-    cache: false
+
 
 #---
 #spring:
 #  security:
 #    user:
-#      name:
-#        hhz
-#      password:
-#        123
+#      name: u
+#      password: u
+
+#logging:
+#  level:
+#    org.springframework.web: trace
+#    org.springframework.security: trace
+#    cn.com.taiji.learn.sshelloworld: DEBUG
+
+---
+# Persistence
+server:
+  port: 8081
+
+spring:
+  profiles:
+    active: mysql
+
+---
+spring:
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    org.springframework.web: info
+    org.springframework.security: info
+    cn.com.taiji.learn.sshelloworld: info
+
+---
+# Persistence
+spring:
+  hibernate:
+    ddl-auto: update
+  properties:
+    javax.persistence.validation.mode: none
+
+---
+spring:
+  mail:
+    host: smtp.163.com
+    username: xilian703wrm@163.com
+    password: KFIUFDMOXAABAOYQ
+    default-encoding: UTF-8
+
+
+#  spring.mail.host=smtp.163.com
+#  spring.mail.username=taiji_tdf@163.com
+#  spring.mail.password=H
+#  spring.mail.default-encoding=UTF-8

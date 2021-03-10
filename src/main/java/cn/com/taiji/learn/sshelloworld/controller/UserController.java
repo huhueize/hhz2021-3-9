@@ -2,7 +2,11 @@ package cn.com.taiji.learn.sshelloworld.controller;
 
 import cn.com.taiji.learn.sshelloworld.dao.UserRepository;
 import cn.com.taiji.learn.sshelloworld.domain.User;
+import cn.com.taiji.learn.sshelloworld.expetion.EmailExistsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +18,21 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    protected Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UserRepository userRepository;
 
     @GetMapping
     public ModelAndView list() {
+        log.debug("进入list");
         Iterable<User> users = this.userRepository.findAll();
         return new ModelAndView("users/list", "users", users);
     }
 
     @GetMapping("{id}")
     public ModelAndView view(@PathVariable("id") Long id) {
-        User user = this.userRepository.findUser(id);
+        User user = this.userRepository.findById(id).get();
         return new ModelAndView("users/view", "user", user);
     }
 
@@ -47,29 +53,19 @@ public class UserController {
 
     @GetMapping(value = "delete/{id}")
     public ModelAndView delete(@PathVariable("id") Long id) {
-        this.userRepository.deleteUser(id);
+        this.userRepository.deleteById(id);
         return new ModelAndView("redirect:/");
     }
 
     @GetMapping("modify/{id}")
     public ModelAndView modifyForm(@PathVariable("id") Long id) {
-        User user = this.userRepository.findUser(id);
+        User user = this.userRepository.findById(id).get();
         return new ModelAndView("users/form", "user", user);
     }
 
-    @GetMapping("test/only-user")
-    @ResponseBody
-    public String onlyuser(){
-        return "this is user";
-    }
-
-//  测试使用
     @GetMapping("test/foo")
-    @ResponseBody
     public String foo() {
-
-//        throw new RuntimeException("Expected exception in controller");
-        return "404 not found";
+        throw new RuntimeException("Expected exception in controller");
     }
 
     @GetMapping("test/bar")
@@ -77,4 +73,12 @@ public class UserController {
     public String bar() {
         return "bar";
     }
+
+    @GetMapping("test/ou")
+    @ResponseBody
+    public String onlyUser() {
+        return "onlyUser";
+    }
+
+
 }
