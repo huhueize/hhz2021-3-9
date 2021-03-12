@@ -55,35 +55,51 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws  Exception{
         http.authorizeRequests()
-                .antMatchers("/user/test/bar").permitAll()
-                .antMatchers("/simpleMailMessage").permitAll()
+//                .antMatchers("/user/test/bar").permitAll()
+//                .antMatchers("/simpleMailMessage").permitAll()
                 .antMatchers("/signup","/user/register").permitAll()
                 .antMatchers("/sendEmail","/user/verify/**").permitAll()
-                .antMatchers("/user/test/only-user").hasRole("USER")
-                .antMatchers("/user/test/foo").hasAnyRole("ADMIN","USER")
+//                .antMatchers("/user/test/only-user").hasRole("USER")
+//                .antMatchers("/user/test/foo").hasAnyRole("ADMIN","USER")
 //                .antMatchers("/user/test/ac").access("hasRole('ROLE_USER')")
-                .antMatchers("/user/test/ac").access("@customAccess.hhz(request,authentication)")
-                .anyRequest().authenticated();
+//                .antMatchers("/user/test/ac").access("@customAccess.hhz(request,authentication)")
+//                .anyRequest().authenticated();
+                .anyRequest().access("@customAccess.hhz(request,authentication)");
 
-        http.formLogin().loginPage("/login11").permitAll()
-                .loginProcessingUrl("/doLogin");
 
 //        http.httpBasic();
+
+//        http.formLogin()
+//                .loginPage("/login").permitAll()
+//                .loginProcessingUrl("/doLogin");
+//
+//        http.oauth2Login().loginPage("/login");
+
+        http.oauth2Login();
 
         http.cors();
 
         http.logout().permitAll().logoutUrl("/logout").permitAll()
-                .invalidateHttpSession(true);;
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID","hhz");
+
 
         http.rememberMe()
                 .rememberMeCookieName("hhz")
                 .tokenValiditySeconds(3600*24*10);
 
-        http.sessionManagement()
-                //指定最大的session并发数量---即一个用户只能同时在一处登陆（腾讯视频的账号好像就只能同时允许2-3个手机同时登陆）
-                .maximumSessions(1)
-                //当超过指定的最大session并发数量时，阻止后面的登陆（感觉貌似很少会用到这种策略）
-                .maxSessionsPreventsLogin(true);
+        //        http.httpBasic();
+        //basic认证和logout不是能配合的：https://stackoverflow.com/questions/25191918/spring-web-security-logout-not-working-with-httpbasic-authentication
+
+        //sesion策略和logout退出的矛盾问题
+
+//        http.sessionManagement()
+//                //指定最大的session并发数量---即一个用户只能同时在一处登陆（腾讯视频的账号好像就只能同时允许2-3个手机同时登陆）
+//                .maximumSessions(1)
+//                //当超过指定的最大session并发数量时，阻止后面的登陆（感觉貌似很少会用到这种策略）
+//                .maxSessionsPreventsLogin(true);
 
 
         http.csrf().disable();

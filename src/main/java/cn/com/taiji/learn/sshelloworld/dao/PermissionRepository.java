@@ -13,7 +13,7 @@ import java.util.Set;
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission,Long> {
 
-    List<Permission> findAllByRoles(Set<Role> roles);
+//    List<Permission> findAllByRoles(Set<Role> roles);
 
     List<Permission> findAllByUrl(String url);
 }

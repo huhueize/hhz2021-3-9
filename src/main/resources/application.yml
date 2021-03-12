@@ -29,8 +29,8 @@ spring:
 
 logging:
   level:
-    org.springframework.web: info
-    org.springframework.security: info
+    org.springframework.web: trace
+    org.springframework.security: trace
     cn.com.taiji.learn.sshelloworld: info
 
 ---

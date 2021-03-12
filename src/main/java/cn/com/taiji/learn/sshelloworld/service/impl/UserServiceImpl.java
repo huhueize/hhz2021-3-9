@@ -50,14 +50,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User enable(User user) {
-        user.setEnable(true);
-        return repository.saveAndFlush(user);
+    public User findById(Long id) {
+        return repository.findById(id).get();
     }
 
     @Override
-    public User findById(Long id) {
-        return repository.findById(id).get();
+    public User enable(User user) {
+        user.setEnabled(true);
+        return repository.saveAndFlush(user);
     }
 
 }

@@ -1,10 +1,12 @@
 package cn.com.taiji.learn.sshelloworld.domain;
 
+import cn.com.taiji.learn.sshelloworld.valid.PasswordMatches;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Calendar;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-//@PasswordMatches
+@PasswordMatches
 public class User {
 
     @Id
@@ -23,27 +25,25 @@ public class User {
 //    @NotEmpty(message = "Username is required.")
 //    private String username;
 
+    @Email
     @NotEmpty(message = "Email is required.")
     private String email;
+
+    private Calendar created = Calendar.getInstance();
 
     @NotEmpty(message = "Password is required.")
     private String password;
 
-//  不入库（数据库没有字段）
     @Transient
     @NotEmpty(message = "Password confirmation is required.")
     private String passwordConfirmation;
 
-    private Calendar created = Calendar.getInstance();
-
     @Column
-    private Boolean enable;
+    private Boolean enabled;
 
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "RolePermission", joinColumns = {@JoinColumn(name = "pid")}
-            , inverseJoinColumns = {@JoinColumn(name = "rid")})
+    @ManyToMany(fetch = FetchType.EAGER)//立即从数据库中进行加载数据;
+    @JoinTable(name = "UserRole",
+            joinColumns = {@JoinColumn(name = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "rid")})
     private List<Role> roles;
-
-
 }

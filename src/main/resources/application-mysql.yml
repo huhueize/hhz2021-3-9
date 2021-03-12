@@ -11,3 +11,32 @@ spring:
     show-sql: true
     hibernate:
     ddl-auto: create-drop
+
+
+---
+server:
+  servlet:
+    session:
+      cookie:
+        name: SSHELLOWORLDSESSIONID
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: b7fb29a538bb19b09365
+            client-secret:
+          gitee:
+            client-id: bb611f5cc4933d6dc1aece4de182430dc7b3892b55f6b682a139177ab3321e8e
+            client-secret:
+            provider: gitee
+            client-name: 码云Gitee登录
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8081/login/oauth2/code/gitee"
+        provider:
+          gitee:
+            authorization-uri: https://gitee.com/oauth/authorize
+            token-uri: https://gitee.com/oauth/token
+            user-info-uri: https://gitee.com/api/v5/user
+            user-name-attribute: "login"

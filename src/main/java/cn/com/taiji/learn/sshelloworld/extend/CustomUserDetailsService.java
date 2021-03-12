@@ -21,9 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         final User user = userRepository.findByEmail(email);
-        if (!user.getEnable()) {
+        if (!user.getEnabled()) {
             throw new UsernameNotFoundException("用户没有被激活，请查看邮箱激活邮件 ");
         }
+
         if (user == null) {
             throw new UsernameNotFoundException("No user found with username: " + email);
         }
@@ -34,8 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }else{
             roles = getAuthorities(ROLE_USER);
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthorities(ROLE_USER));
-
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), roles);
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(String role) {
