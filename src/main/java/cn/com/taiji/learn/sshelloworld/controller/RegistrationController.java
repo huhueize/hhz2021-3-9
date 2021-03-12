@@ -59,7 +59,8 @@ public class RegistrationController {
     @GetMapping(value = "/user/verify/{id}")
     public ModelAndView verify(@PathVariable String id) throws EmailExistsException {
         User user = userService.findById(Long.valueOf(id));
-        userService.enable(user);
+        User user1 = userService.enable(user);
+        System.out.println("-----------------------"+user1);
         return new ModelAndView("redirect:/login");
     }
 

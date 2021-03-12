@@ -1,1 +1,1 @@
-insert into `user` (`email`,`password`,`enable`,`created`) values ("2321608955@qq.com","123456","0",new data );
+insert into `user` (`email`,`password`,`enable`,`created`) values ("2321608955@qq.com","123456",0,new data );

@@ -14,6 +14,7 @@ import java.util.Collection;
 
 public class CustomUserDetailsService implements UserDetailsService {
     private static final String ROLE_USER = "ROLE_USER";
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Autowired
     private UserRepository userRepository;
@@ -26,7 +27,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("No user found with username: " + email);
         }
+        //TODO 从数据库中查询用户所属的角色Role
+        Collection<? extends GrantedAuthority> roles ;
+        if (user.getEmail().equals("a")) {
+            roles = Arrays.asList(new SimpleGrantedAuthority(ROLE_ADMIN));
+        }else{
+            roles = getAuthorities(ROLE_USER);
+        }
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthorities(ROLE_USER));
+
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(String role) {

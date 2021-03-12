@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>child</title>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<div>Call server's getSample controller without CORS config.</div>
+<form action="http://localhost:8083/sample" method="POST" >
+    <div >
+        <label for="name">Enter your name: </label>
+        <input type="text" name="name" id="name" required>
+    </div>
+    <div >
+        <label for="name">Enter your password: </label>
+        <input type="text" name="password" id="password" required>
+    </div>
+    <div>
+        <input type="submit" value="提交">
+    </div>
+</form>
+
+<br/>
+<br/>
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function getSample() {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8083/sample',
+            success: function (result) {
+                alert(result);
+            },
+            error: function (error, msg) {
+                alert(msg);
+            }
+        });
+    }
+</script>
+<button onclick="getSample()">getSample</button>
+
+<br/>
+<br/>
+<script language="javascript" type="text/javascript">
+    function postSample() {
+        var postParam = {
+            'username':"a",
+            'password':"a"
+        };
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8083/sample',
+            headers: {
+                'X-TEST':"test header"
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            data:postParam,
+            success: function (result) {
+                alert(result);
+            },
+            error: function (error, msg) {
+                alert(msg);
+            }
+        });
+    }
+</script>
+<button onclick="postSample()">postSample</button>
+
+
+</body>
+</html>

@@ -50,6 +50,11 @@ spring:
     default-encoding: UTF-8
 
 
+---
+sshelloworld:
+  maximumSessions: 2
+
+
 #  spring.mail.host=smtp.163.com
 #  spring.mail.username=taiji_tdf@163.com
 #  spring.mail.password=H

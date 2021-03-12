@@ -80,5 +80,11 @@ public class UserController {
         return "onlyUser";
     }
 
+    @GetMapping("test/ac")
+    @ResponseBody
+    public String ac() {
+        return "ac";
+    }
+
 
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Calendar;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -37,6 +38,12 @@ public class User {
 
     @Column
     private Boolean enable;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "RolePermission", joinColumns = {@JoinColumn(name = "pid")}
+            , inverseJoinColumns = {@JoinColumn(name = "rid")})
+    private List<Role> roles;
 
 
 }
